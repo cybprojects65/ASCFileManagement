@@ -1,0 +1,16 @@
+package it.cnr.raster.asc;
+
+import java.io.File;
+
+public class MainFixAdriatic {
+
+	
+	public static void main(String[] args) throws Exception{
+		
+			AscRaster raster = new AscRasterReader().readRaster("Engraulis_encrasicolus.asc");
+			AscFixAdriaticSea fixer = new AscFixAdriaticSea();
+			fixer.fix(raster);
+			fixer.save(new File("fix.asc"));
+	}
+	
+}

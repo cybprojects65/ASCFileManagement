@@ -1,0 +1,25 @@
+package it.cnr.raster.asc;
+
+import java.io.File;
+
+public class MainComparator {
+
+	public static void main(String [] args) throws Exception{
+		
+		File h1 = new File("Merluccius_merluccius.asc");
+		File h2 = new File("Merluccius_merluccius.asc");
+		//File h2 = new File("Engraulis_encrasicolus.asc");
+		double tolerance = 0.1; //admit 0.1 discrepancy on probability
+		boolean isRelativeTolerance = false; //if 0.1 should be interpreted as a relative percentage on two numbers
+		
+		AscRasterReader rt = new AscRasterReader();
+		AscRaster h1r = rt.readRaster(h1.getAbsolutePath());
+		AscRaster h2r = rt.readRaster(h2.getAbsolutePath());
+		AscComparator comparator = new AscComparator();
+		
+		comparator.compare(h1r, h2r, tolerance, isRelativeTolerance);
+		comparator.showStats();
+	}
+	
+	
+}

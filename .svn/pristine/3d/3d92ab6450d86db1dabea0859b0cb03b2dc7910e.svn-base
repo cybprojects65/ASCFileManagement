@@ -1,0 +1,199 @@
+package it.cnr.raster.asc;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+//compares two habitat maps over the extension of habitat 1
+public class AscComparator {
+
+	LinkedHashMap<String, String> discrepancyInfo = new LinkedHashMap<>();
+	AscRaster discrepancyRaster = null;
+	
+	public void compare(AscRaster r1,AscRaster r2, double tolerance, boolean isRelativeTolerance,boolean toleranceAsAThreshold) throws Exception{
+		
+		double [][]data1 = r1.data;
+		double [][]data2 = r2.data;
+		
+		double cumulativeDiscrepancy = 0;
+		int countAll = data1.length*data1[0].length;
+		
+		int count1NODATA2DATA = 0;
+		int count1DATA2NODATA = 0;
+		int count1NODATA2NODATA = 0;
+		int count1LOW2HIGH = 0;
+		int count1HIGH2LOW = 0;
+		int count1DATA2DATA = 0;
+		int count1SAME2DATA = 0;
+		
+		double noData1 = Double.parseDouble(r1.NDATA);
+		double noData2 = Double.parseDouble(r2.NDATA);
+		
+		double minDiscrepancy = Double.MAX_VALUE;
+		double maxDiscrepancy = 0;
+		
+		double discrData [][] = new double[data1.length][data1[0].length];
+		HashMap<Integer, Double> allD = new HashMap<>();
+		int nonzero=0;
+		for (int i = 0;i<data1.length;i++) {
+			
+			
+			for (int j = 0;j<data1[0].length;j++) {
+				discrData[i][j] = noData1;
+				double d1 = data1[i][j];
+				double d2 = Double.NaN;
+				if (j<data2[0].length)
+					d2 = data2[i][j];
+				
+				if (( d1 == noData1)&&(d2 == noData2) || 
+						(Double.isNaN(d1) && Double.isNaN(d2))
+						) {
+					count1NODATA2NODATA++;
+				}else if ((d1 == noData1)&&(d2 != noData2)|| 
+						(Double.isNaN(d1) && !Double.isNaN(d2))
+						) {
+					count1NODATA2DATA++;
+				}else if ((d1 != noData1)&&(d2 == noData2)|| 
+						(!Double.isNaN(d1) && Double.isNaN(d2))) {
+					count1DATA2NODATA++;
+				}else {
+					if (toleranceAsAThreshold) {
+						if (d1>=tolerance) {
+							d1=1;
+						}
+						else 
+							d1=0;
+						if (d2>=tolerance) {
+							nonzero++;
+							d2=1;
+						}
+						else 
+							d2=0;
+					}
+					count1DATA2DATA++;
+					double discrepancy = Math.abs(d1-d2);
+					cumulativeDiscrepancy = cumulativeDiscrepancy+discrepancy;
+					double d = discrepancy;
+					allD.put(count1DATA2DATA, discrepancy);
+					
+					if (isRelativeTolerance && !toleranceAsAThreshold)
+						d = discrepancy/Math.abs(d1);
+					
+					discrData[i][j] = discrepancy;
+					
+					if (d<=tolerance) {
+						count1SAME2DATA++;
+						
+						if (discrepancy<minDiscrepancy)
+							minDiscrepancy=discrepancy;
+						if (discrepancy>maxDiscrepancy)
+							maxDiscrepancy=discrepancy;
+						
+					} else if (d1<d2){
+						count1LOW2HIGH++;
+					} else if (d1>d2){
+						count1HIGH2LOW++;
+					}else {
+						System.out.println("INCONSISTENCY "+data1[i][j]+";"+data2[i][j]+" tol "+tolerance+" d "+d);
+						
+					}
+					
+				}
+				
+				countAll++;
+			}
+			
+		}
+		System.out.println("nonzero "+nonzero);
+		int count1NOTSAME2DATA = count1DATA2DATA-count1SAME2DATA;
+		double avgDiscrepancy = cumulativeDiscrepancy/(double)count1DATA2DATA;
+		double accuracy = (double)count1SAME2DATA/(double)(count1DATA2DATA+count1NODATA2DATA+count1DATA2NODATA);
+		Collection<Double> values = allD.values();
+		Double [] allvalues = new Double[values.size()];
+		int vv=0;
+		for (Double v:values) {
+			allvalues [vv] =v;
+			vv++;
+		}
+		
+		double relativeError = avgDiscrepancy/maxDiscrepancy;
+		String suitability = "";
+		
+		double suitabilityCore = (double)(count1HIGH2LOW-count1LOW2HIGH)/(double)(count1HIGH2LOW);
+		
+		if (suitabilityCore>0) {
+			suitability="First habitat is more suitable in the core regions (of "+Utils.roundDecimal((suitabilityCore*100),1)+"%). ";
+		}else if (suitabilityCore<0) {
+				suitability="Second habitat is more suitable in the core regions (of "+Utils.roundDecimal((-1*suitabilityCore*100),1)+"%). ";
+		}else {
+			suitability="Habitat suitability is equal in the core regions. ";
+		}
+		
+		double extension = (double)(count1NODATA2DATA-count1DATA2NODATA)/(double)(count1DATA2NODATA);
+		if (extension>0) {
+			suitability+="Habitat extension increase: The second habitat is more extended (of "+Utils.roundDecimal((extension*100),1)+"%). ";
+		}else if (extension<0) {
+				suitability+="Habitat extension decrease: The second habitat is less extended (of "+Utils.roundDecimal(Math.abs(extension*100),1)+"%). ";
+		}else {
+			suitability+="Habitat extension is equal. ";
+		}
+		
+		double suitabilityScore = (double)(count1DATA2NODATA+count1HIGH2LOW-count1NODATA2DATA-count1LOW2HIGH)/(double)(count1DATA2NODATA+count1HIGH2LOW);
+		
+		if (suitabilityScore>0) {
+			suitability+="First habitat is overall more suitable than the second (of "+Utils.roundDecimal((suitabilityScore*100),1)+"%). ";
+		}else if (suitabilityScore<0) {
+				suitability+="Second habitat is overall more suitable than the first (of "+Utils.roundDecimal((-1*suitabilityScore*100),1)+"%). ";
+		}else {
+			suitability+="Habitat suitability is equal overall. ";
+		}
+		
+		double standardDeviation = Utils.standardDeviation(allvalues);
+		discrepancyInfo.put("Maximum Discrepancy", ""+maxDiscrepancy);
+		discrepancyInfo.put("Minimum Discrepancy", ""+minDiscrepancy);
+		discrepancyInfo.put("Average Discrepancy", ""+Utils.roundDecimal(avgDiscrepancy,3));
+		discrepancyInfo.put("Relative Discrepancy", ""+Utils.roundDecimal(relativeError,3));
+		discrepancyInfo.put("Standard Deviation of Discrepancy", ""+Utils.roundDecimal(standardDeviation,2));
+		discrepancyInfo.put("Similarity of habitat 2 to habitat 1 (accuracy)", ""+Utils.roundDecimal(accuracy*100,2)+"%");
+		discrepancyInfo.put("Number of comparisons", ""+countAll);
+		discrepancyInfo.put("Comparison resolution", ""+r1.cellsize);
+		discrepancyInfo.put("Relative suitability in the core area", ""+Utils.roundDecimal(suitabilityCore,2));
+		discrepancyInfo.put("Relative expansion ", ""+Utils.roundDecimal(extension,2));
+		discrepancyInfo.put("Relative suitability in the whole area", ""+Utils.roundDecimal(suitabilityScore,2));
+		discrepancyInfo.put("No data 1 vs No data 2", ""+count1NODATA2NODATA);
+		discrepancyInfo.put("No data 1 vs data 2", ""+count1NODATA2DATA);
+		discrepancyInfo.put("data 1 vs No data 2", ""+count1DATA2NODATA);
+		discrepancyInfo.put("data 1 vs data 2", ""+count1DATA2DATA);
+		discrepancyInfo.put("data 1 = data 2", ""+count1SAME2DATA);
+		discrepancyInfo.put("data 1 != data 2", ""+count1NOTSAME2DATA);
+		discrepancyInfo.put("data 1 lower than data 2", ""+count1LOW2HIGH);
+		discrepancyInfo.put("data 1 higher than data 2", ""+count1HIGH2LOW);
+		double kappaCoverage=Utils.cohensKappaForDichotomy(count1DATA2DATA, count1DATA2NODATA, count1NODATA2DATA, count1NODATA2NODATA);
+		discrepancyInfo.put("Kappa - coverage agreement", ""+kappaCoverage);
+		discrepancyInfo.put("Kappa - coverage agreement (interpretation Landis-Koch)", Utils.kappaClassificationLandisKoch(kappaCoverage));
+		discrepancyInfo.put("Kappa - coverage agreement (interpretation Fleiss)", Utils.kappaClassificationFleiss(kappaCoverage));
+				
+		double kappa=Utils.cohensKappaForDichotomy(count1SAME2DATA, count1HIGH2LOW, count1LOW2HIGH, count1NODATA2NODATA);
+		discrepancyInfo.put("Kappa - agreement", ""+Utils.roundDecimal(kappa,2));
+		discrepancyInfo.put("Kappa - agreement (interpretation Landis-Koch)", Utils.kappaClassificationLandisKoch(kappa));
+		discrepancyInfo.put("Kappa - agreement (interpretation Fleiss)", Utils.kappaClassificationFleiss(kappa));
+		discrepancyInfo.put("Comment", suitability);
+		
+		discrepancyRaster = new AscRaster(discrData, r1.cellsize, r1.dx, r1.dy, r1.xll, r1.yll);
+	}
+	
+	public String showStats() {
+		String info = discrepancyInfo.toString();
+		info = info.replace(", ","\n").replace("{", "").replace("}", "");
+		
+		System.out.println(info);
+		return info;
+	}
+	
+	public void save(File outputFile) throws Exception{
+		AscRasterWriter writer = new AscRasterWriter();
+		writer.writeRaster(outputFile.getAbsolutePath(), discrepancyRaster);
+	}
+	
+}
