@@ -76,8 +76,14 @@ public class CSVEnrichment {
 	}
 
 	public static void main(String[] args) throws Exception {
-		File CSV= new File("D:\\WorkFolder\\Experiments\\EcologicalModelling Solemon\\Prediction Model\\ctc_index_reconstructed_DIVA.csv");
-		File RasterFile= new File ("D:\\WorkFolder\\Experiments\\EcologicalModelling Solemon\\Prediction Model\\Sepia_officinalis.asc"); 
+		//experiment for 2020
+		//File CSV= new File("D:\\WorkFolder\\Experiments\\EcologicalModelling Solemon\\Prediction Model\\ctc_index_reconstructed_DIVA.csv");
+		//File RasterFile= new File ("D:\\WorkFolder\\Experiments\\EcologicalModelling Solemon\\Prediction Model\\Sepia_officinalis.asc"); 
+		//experiment for 2019		
+		
+		
+		File CSV= new File("C:\\Users\\Utente\\Ricerca\\Experiments\\EcologicalModelling Solemon\\Validazione\\PredictionModel\\ctc_index_reconstructed_DIVA.csv");
+		File RasterFile= new File ("C:\\Users\\Utente\\Ricerca\\Experiments\\EcologicalModelling Solemon\\Validazione\\MaxEnt\\output\\MaxEnt 2019_7-9_10-12 Sepia Validazione\\Sepia_officinalis.asc"); 
 		
 		enrich(CSV, RasterFile, "lon", "lat");
 	}
