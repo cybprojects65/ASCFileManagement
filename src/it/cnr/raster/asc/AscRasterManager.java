@@ -17,7 +17,9 @@ public class AscRasterManager {
 	public static int coordinateToIndex(double coordinate,double delta,double coordinateinit, int offset) {
 		
 		
-		int index = (int) ((coordinate-coordinateinit)/Math.abs(delta));//(int) Math.round((coordinate-coordinateinit)/Math.abs(delta));
+		//int index = (int) ((coordinate-coordinateinit)/Math.abs(delta));//(int) Math.round((coordinate-coordinateinit)/Math.abs(delta));
+		int index = (int) Math.round((coordinate-coordinateinit)/Math.abs(delta));
+		
 		if (offset>0)
 			index = offset-index;
 		
