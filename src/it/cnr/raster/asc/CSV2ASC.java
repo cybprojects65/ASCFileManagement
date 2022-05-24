@@ -59,7 +59,7 @@ public class CSV2ASC {
 		int nRows = (int)((maxY-minY)/resolution)+1;
 		
 		double data [][] = new double[nRows][nCols];
-		AscRaster asc = new AscRaster(data,resolution, resolution, resolution, minX, minY);
+		AscRaster asc = new AscRaster(data,resolution, resolution, resolution, minX-(resolution/2), minY-(resolution/2));
 		asc.initData(-9999);
 		asc.setNDATA("-9999");
 		AscRasterManager.inject(triples,asc);
