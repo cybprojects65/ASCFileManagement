@@ -1,6 +1,8 @@
-package it.cnr.raster.asc;
+package it.cnr.raster.asc.filemanagement;
 
 import java.util.List;
+
+import it.cnr.raster.asc.filemanagement.utils.Triple;
 
 public class AscRasterManager {
 

@@ -1,9 +1,13 @@
-package it.cnr.raster.asc;
+package it.cnr.raster.asc.examples;
 
 import java.io.File;
 import java.io.FileWriter;
 
-public class MainComparator {
+import it.cnr.raster.asc.filemanagement.AscRaster;
+import it.cnr.raster.asc.filemanagement.AscRasterReader;
+import it.cnr.raster.asc.processing.generalpurpose.AscCompare;
+
+public class Compare2ASCFiles {
 
 	public static void main(String [] args) throws Exception{
 		
@@ -33,7 +37,7 @@ public class MainComparator {
 		AscRasterReader rt = new AscRasterReader();
 		AscRaster h1r = rt.readRaster(h1.getAbsolutePath());
 		AscRaster h2r = rt.readRaster(h2.getAbsolutePath());
-		AscComparator comparator = new AscComparator();
+		AscCompare comparator = new AscCompare();
 		
 		comparator.compare(h1r, h2r, tolerance, isRelativeTolerance, toleranceAsAThreshold);
 		String stats = comparator.showStats();

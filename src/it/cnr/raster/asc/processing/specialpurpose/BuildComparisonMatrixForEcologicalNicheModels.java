@@ -1,15 +1,15 @@
-package it.cnr.raster.asc.experiments;
+package it.cnr.raster.asc.processing.specialpurpose;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.util.List;
 
-import it.cnr.raster.asc.AscComparator;
-import it.cnr.raster.asc.AscRaster;
-import it.cnr.raster.asc.AscRasterReader;
+import it.cnr.raster.asc.filemanagement.AscRaster;
+import it.cnr.raster.asc.filemanagement.AscRasterReader;
+import it.cnr.raster.asc.processing.generalpurpose.AscCompare;
 
-public class ComparisonMatrixForENMAdriaticPaper {
+public class BuildComparisonMatrixForEcologicalNicheModels {
 
 	public static void main(String[] args) throws Exception {
 
@@ -76,7 +76,7 @@ public class ComparisonMatrixForENMAdriaticPaper {
 								
 								System.out.println("A thr: " + thresholdA + " vs B thr: " + thresholdB);
 
-								AscComparator comparator = new AscComparator();
+								AscCompare comparator = new AscCompare();
 
 								//comparator.compareWithoutNoData(A, B, thresholdA, thresholdB, thresholdAH, thresholdBH, 0, false, true);
 								

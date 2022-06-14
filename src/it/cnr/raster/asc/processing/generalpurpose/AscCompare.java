@@ -1,4 +1,4 @@
-package it.cnr.raster.asc;
+package it.cnr.raster.asc.processing.generalpurpose;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,8 +7,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import it.cnr.raster.asc.filemanagement.AscRaster;
+import it.cnr.raster.asc.filemanagement.AscRasterWriter;
+import it.cnr.raster.asc.filemanagement.utils.Utils;
+
 //compares two habitat maps over the extension of habitat 1
-public class AscComparator {
+public class AscCompare {
 
 	public LinkedHashMap<String, String> discrepancyInfo = new LinkedHashMap<>();
 	public AscRaster discrepancyRaster = null;

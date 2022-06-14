@@ -6,9 +6,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-import it.cnr.raster.asc.AscRaster;
-import it.cnr.raster.asc.AscRasterManager;
-import it.cnr.raster.asc.AscRasterReader;
+import it.cnr.raster.asc.filemanagement.AscRaster;
+import it.cnr.raster.asc.filemanagement.AscRasterManager;
+import it.cnr.raster.asc.filemanagement.AscRasterReader;
 
 public class CSVEnrichment {
 

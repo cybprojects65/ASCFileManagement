@@ -1,8 +1,12 @@
-package it.cnr.raster.asc;
+package it.cnr.raster.asc.examples;
 
 import java.io.File;
 
-public class MainFixAdriatic {
+import it.cnr.raster.asc.filemanagement.AscRaster;
+import it.cnr.raster.asc.filemanagement.AscRasterReader;
+import it.cnr.raster.asc.processing.specialpurpose.AscCutoOutAdriaticSea;
+
+public class CutRasterOnTheAdriatic {
 
 	
 	public static void main(String[] args) throws Exception{
@@ -13,7 +17,7 @@ public class MainFixAdriatic {
 		
 		for (File input:allFiles) {
 			AscRaster raster = new AscRasterReader().readRaster(input.getAbsolutePath());
-			AscFixAdriaticSea fixer = new AscFixAdriaticSea();
+			AscCutoOutAdriaticSea fixer = new AscCutoOutAdriaticSea();
 			fixer.fix(raster);
 			fixer.save(new File(outputF,input.getName()));
 		}

@@ -1,4 +1,4 @@
-package it.cnr.raster.asc;
+package it.cnr.raster.asc.filemanagement.utils;
 
 public class Triple {
 	public double x; 

@@ -1,8 +1,12 @@
-package it.cnr.raster.asc;
+package it.cnr.raster.asc.examples;
 
 import java.io.File;
 
-public class MainNormalize {
+import it.cnr.raster.asc.filemanagement.AscRaster;
+import it.cnr.raster.asc.filemanagement.AscRasterReader;
+import it.cnr.raster.asc.processing.generalpurpose.AscNormalize;
+
+public class NormalizeASC {
 
 	public static void main(String[] args) throws Exception {
 		File folder = new File("D:\\WorkFolder\\Experiments\\ENM in Adriatic Sea\\MaxEntModels\\all models 05\\");

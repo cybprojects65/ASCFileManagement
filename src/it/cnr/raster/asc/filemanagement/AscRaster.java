@@ -1,4 +1,4 @@
-package it.cnr.raster.asc;
+package it.cnr.raster.asc.filemanagement;
 
 import java.util.Arrays;
 
@@ -13,17 +13,17 @@ import java.util.Arrays;
  * 
  */
 public class AscRaster {
-	protected double[][] data;
-	protected double xll;
-	protected double yll;
-	protected double cellsize;
-	protected double dx = -1;
-	protected double dy = -1;
-	protected int cols;
-	protected int rows;
+	public double[][] data;
+	public double xll;
+	public double yll;
+	public double cellsize;
+	public double dx = -1;
+	public double dy = -1;
+	public int cols;
+	public int rows;
 
 	public static final String DEFAULT_NODATA = "-9999";
-	protected String NDATA = DEFAULT_NODATA;
+	public String NDATA = DEFAULT_NODATA;
 
 	public void print() {
 		System.out.println("Rows: " + rows + " cols: " + cols + " cellsize " + cellsize + " dx " + dx + " dy " + dy);

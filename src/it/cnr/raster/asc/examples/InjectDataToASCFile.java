@@ -1,9 +1,16 @@
-package it.cnr.raster.asc;
+package it.cnr.raster.asc.examples;
 
 import java.io.File;
 import java.util.List;
 
-public class Main {
+import it.cnr.raster.asc.filemanagement.AscRaster;
+import it.cnr.raster.asc.filemanagement.AscRasterManager;
+import it.cnr.raster.asc.filemanagement.AscRasterReader;
+import it.cnr.raster.asc.filemanagement.AscRasterWriter;
+import it.cnr.raster.asc.filemanagement.utils.OccurrenceRecordsManager;
+import it.cnr.raster.asc.filemanagement.utils.Triple;
+
+public class InjectDataToASCFile {
 
 	public static void main(String args[]) throws Exception {
 

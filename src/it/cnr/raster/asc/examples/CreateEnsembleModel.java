@@ -1,8 +1,12 @@
-package it.cnr.raster.asc;
+package it.cnr.raster.asc.examples;
 
 import java.io.File;
 
-public class MainEnsemble {
+import it.cnr.raster.asc.filemanagement.AscRaster;
+import it.cnr.raster.asc.filemanagement.AscRasterReader;
+import it.cnr.raster.asc.processing.generalpurpose.AscEnsemble;
+
+public class CreateEnsembleModel {
 
 	
 	public static void main(String[] args) throws Exception{

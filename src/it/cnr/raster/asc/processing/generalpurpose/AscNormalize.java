@@ -1,6 +1,9 @@
-package it.cnr.raster.asc;
+package it.cnr.raster.asc.processing.generalpurpose;
 
 import java.io.File;
+
+import it.cnr.raster.asc.filemanagement.AscRaster;
+import it.cnr.raster.asc.filemanagement.AscRasterWriter;
 
 //compares two habitat maps over the extension of habitat 1
 public class AscNormalize {

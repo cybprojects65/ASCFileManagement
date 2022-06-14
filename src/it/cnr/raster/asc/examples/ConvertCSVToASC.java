@@ -1,4 +1,4 @@
-package it.cnr.raster.asc.processing.generalpurpose;
+package it.cnr.raster.asc.examples;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -9,8 +9,9 @@ import it.cnr.raster.asc.filemanagement.AscRaster;
 import it.cnr.raster.asc.filemanagement.AscRasterManager;
 import it.cnr.raster.asc.filemanagement.AscRasterWriter;
 import it.cnr.raster.asc.filemanagement.utils.Triple;
+import it.cnr.raster.asc.processing.generalpurpose.CSVToASCConverter;
 
-public class CSVToASCConverter {
+public class ConvertCSVToASC {
 
 	// files should be organised with the following folder path
 	// RCP/year/speciesType/CSV
@@ -20,6 +21,24 @@ public class CSVToASCConverter {
 	// latitude,longitude,value
 	// ...,..,...
 	// ...,...,...
+	public static void main(String args[]) throws Exception {
+		//known data offset on longitude and latitude
+		double offsetX = 0;
+		double offsetY = 0;
+		//reference year
+		String year = "2005";
+		//reference emission scenario, e.g., RCP4.5, RCP8.5, SRES_A2, HISTORICAL
+		String rcp = "RCP4.5";
+		//files' spatial resolution
+		double resolution = 0.5;
+		//data type, e.g., environmental, geophysical, socioeconomic
+		String dataType = "environmental";
+		String basepath = "./testfiles";
+		CSVToASCConverter.CSV2ASC(basepath, year, rcp, dataType,
+				offsetX, offsetY, resolution);
+		
+	}
+
 	public static void CSV2ASC(String basepath, String year, String rcp, String dataType,
 			double offsetX, double offsetY, double resolution) throws Exception {
 
@@ -87,6 +106,5 @@ public class CSVToASCConverter {
 		System.out.println("All files converted.");
 		
 	}
-	
 
 }

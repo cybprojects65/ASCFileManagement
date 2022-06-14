@@ -1,4 +1,4 @@
-package it.cnr.raster.asc;
+package it.cnr.raster.asc.filemanagement;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

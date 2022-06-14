@@ -1,9 +1,13 @@
-package it.cnr.raster.asc;
+package it.cnr.raster.asc.processing.specialpurpose;
 
 import java.io.File;
 
-//compares two habitat maps over the extension of habitat 1
-public class AscFixAdriaticSea {
+import it.cnr.raster.asc.filemanagement.AscRaster;
+import it.cnr.raster.asc.filemanagement.AscRasterManager;
+import it.cnr.raster.asc.filemanagement.AscRasterWriter;
+
+
+public class AscCutoOutAdriaticSea {
 
 	AscRaster fixedRaster = null;
 
