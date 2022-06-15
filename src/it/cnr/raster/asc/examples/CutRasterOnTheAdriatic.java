@@ -4,7 +4,7 @@ import java.io.File;
 
 import it.cnr.raster.asc.filemanagement.AscRaster;
 import it.cnr.raster.asc.filemanagement.AscRasterReader;
-import it.cnr.raster.asc.processing.specialpurpose.AscCutoOutAdriaticSea;
+import it.cnr.raster.asc.processing.specialpurpose.AscCutOutAdriaticSea;
 
 public class CutRasterOnTheAdriatic {
 
@@ -17,7 +17,7 @@ public class CutRasterOnTheAdriatic {
 		
 		for (File input:allFiles) {
 			AscRaster raster = new AscRasterReader().readRaster(input.getAbsolutePath());
-			AscCutoOutAdriaticSea fixer = new AscCutoOutAdriaticSea();
+			AscCutOutAdriaticSea fixer = new AscCutOutAdriaticSea();
 			fixer.fix(raster);
 			fixer.save(new File(outputF,input.getName()));
 		}

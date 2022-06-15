@@ -6,11 +6,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import it.cnr.raster.asc.filemanagement.AscRaster;
+import it.cnr.raster.asc.filemanagement.AscRasterManager;
 import it.cnr.raster.asc.filemanagement.AscRasterReader;
 public class ASCvsCSVConsistencyChecker {
 	AscRaster extractedRaster = null;
 
-	public void ConsistencyCheckCsvAsc(String csvfile,String ascfile,int checkstep) throws IOException {
+	public void ConsistencyCheckCsvAsc(String csvfile,String ascfile, double offsetX,double offsetY,double resolution) throws IOException {
 		int seed=0;
 		int min=2;
 		String line = ""; 
@@ -18,30 +19,35 @@ public class ASCvsCSVConsistencyChecker {
 		double latcsv,loncsv,valueCSV,valueASC;
 		int miss = 0;
 		int hit = 0;
-		int max = checkstep;
+		
 		AscRaster raster;
 		String[] linearray;
 		raster = new AscRasterReader().readRaster(ascfile);
-		seed=(int)Math.floor(Math.random()*(max-min+1)+min);
+		//seed=(int)Math.floor(Math.random()*(max-min+1)+min);
 		BufferedReader br = new BufferedReader(new FileReader(csvfile));
 		line = br.readLine();
+		AscRasterReader arr = new AscRasterReader();
+		AscRaster rasterASC = arr.readRaster(ascfile);
 		
 		while ((line = br.readLine()) != null) {
-			if(seed==0) {
+			//if(seed==0) {
+				if(line.contains("latitude"))
+					continue;
 				linearray = line.split(splitBy);
-				loncsv = Double.parseDouble(linearray[0]);
-				latcsv = Double.parseDouble(linearray[1]);
+				double latitude = Double.parseDouble(linearray[0]) + offsetY - resolution / 2; 						
+				double longitude = Double.parseDouble(linearray[1]) + offsetX - resolution / 2;
+				
 				valueCSV = Double.parseDouble(linearray[2]);
-				valueASC=getValue(loncsv,latcsv,raster);
+				valueASC=AscRasterManager.getValue(longitude,latitude,raster);
 				if(valueASC==valueCSV) {
 					hit++;
 				}else {
 					miss++;
 				}
-				seed=(int)Math.floor(Math.random()*(max-min+1)+min);	
-			}else {
-				seed=seed-1;					
-			}			
+				//seed=(int)Math.floor(Math.random()*(max-min+1)+min);	
+			//}else {
+				//seed=seed-1;					
+			//}			
 		}
 		br.close();
 		System.out.println("hit = "+hit+" ,miss = "+miss);
@@ -109,27 +115,7 @@ public class ASCvsCSVConsistencyChecker {
 	
 	}
 	
-	public static double getValue(double longitude,double latitude, AscRaster raster) {
-		int longIndx = coordinateToIndex(longitude, raster.cellsize, raster.xll, 0);
-		int latIndx = coordinateToIndex(latitude, raster.cellsize, raster.yll, raster.data.length-1);
-		
-		if (longIndx<0)
-			System.out.println("Error:longi is lower than minimum: valore richiesto=("+longitude+","+latitude+"), raster.xll="+raster.xll+"index="+longIndx);
-		if (latIndx<0)
-			System.out.println("Error:lat is lower than minimum: valore richiesto="+longitude+","+latitude+"), raster.yll="+raster.yll+"index="+latIndx);
-		
-		try {
-			//System.out.println("indici ("+longIndx+","+latIndx+")");
-			double v = raster.data[latIndx][longIndx];
-			return v;
-		}catch(Exception e) {
-			e.printStackTrace();
-			//System.out.println("Error: coordinates are over the bounding box - returning "+raster.NDATA);
-		}
-		
-		return Double.parseDouble(raster.NDATA);
-		
-	}
+	
 	
 }
 

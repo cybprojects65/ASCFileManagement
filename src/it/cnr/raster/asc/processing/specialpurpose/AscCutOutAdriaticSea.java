@@ -7,7 +7,7 @@ import it.cnr.raster.asc.filemanagement.AscRasterManager;
 import it.cnr.raster.asc.filemanagement.AscRasterWriter;
 
 
-public class AscCutoOutAdriaticSea {
+public class AscCutOutAdriaticSea {
 
 	AscRaster fixedRaster = null;
 
