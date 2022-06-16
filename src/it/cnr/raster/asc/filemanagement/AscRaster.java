@@ -2,6 +2,7 @@ package it.cnr.raster.asc.filemanagement;
 
 import java.util.Arrays;
 
+//Credits to https://github.com/lidapeng/java-esri-ascii/blob/master/javaRasters/src/com/moseph/gis/raster/Raster.java
 /**
  * Represents my best guess at the ESRI ASCII raster format. I couldn't find any sensible documentation, so it supports the following features:
  * <ul>
