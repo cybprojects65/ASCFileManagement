@@ -21,11 +21,16 @@ public class CSVToASCConverter {
 	// ...,..,...
 	// ...,...,...
 	public static void CSV2ASC(String basepath, String year, String rcp, String dataType,
-			double offsetX, double offsetY, double resolution) throws Exception {
-
+			double offsetX, double offsetY, double resolution,boolean usestructuredpath) throws Exception {
+		
 		String foldercsv = basepath + "/" + rcp + "/" + year + "/" + dataType + "/CSV/";
 		String folderasc = basepath + "/" + rcp + "/" + year + "/" + dataType + "/ASC/";
-
+		
+		
+		if (!usestructuredpath) {
+			foldercsv = basepath + "/";
+			folderasc = basepath + "/" ;
+		}
 		File[] allFiles = new File(foldercsv).listFiles();
 
 		for (File f : allFiles) {
@@ -85,6 +90,13 @@ public class CSVToASCConverter {
 			}
 		}
 		System.out.println("All files converted.");
+		
+	}
+	
+	public static void CSV2ASC(String basepath, String year, String rcp, String dataType,
+			double offsetX, double offsetY, double resolution) throws Exception {
+		CSV2ASC( basepath,  year,  rcp,  dataType,
+				 offsetX,  offsetY,  resolution, true);
 		
 	}
 	
