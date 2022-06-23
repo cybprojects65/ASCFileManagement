@@ -1,6 +1,12 @@
 package it.cnr.raster.asc.filemanagement.utils;
 
-public class Triple {
+import java.io.Serializable;
+
+public class Triple implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public double x; 
 	public double y; 
 	public double v;
