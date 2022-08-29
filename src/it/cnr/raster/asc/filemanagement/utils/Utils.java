@@ -11,7 +11,16 @@ public class Utils {
 		return T;
 	}
 	
-	
+	public static double mean(double[] data) {
+		
+		// The mean average
+				double mean = 0.0;
+				for (int i = 0; i < data.length; i++) {
+				        mean += data[i];
+				}
+				mean /= (double)data.length;
+				return mean;
+	}
 	public static double standardDeviation(Double [] data) {
 			
 		
